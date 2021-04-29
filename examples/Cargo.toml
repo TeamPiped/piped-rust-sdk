@@ -14,5 +14,9 @@ name = "channel"
 path = "channel.rs"
 
 [[example]]
+name = "playlist"
+path = "playlist.rs"
+
+[[example]]
 name = "trending"
 path = "trending.rs"

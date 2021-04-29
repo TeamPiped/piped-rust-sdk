@@ -12,7 +12,10 @@ async fn main() {
 
     let client = PipedClient::new(httpclient, instance);
 
-    let streams = client.get_trending().await.unwrap();
+    let playlist = client
+        .get_playlist_from_id("PLQSoWXSpjA38FIQCvwnVNPlGPVA63WTD8".to_string())
+        .await
+        .unwrap();
 
-    println!("{:?}", streams);
+    println!("{:?}", playlist);
 }
