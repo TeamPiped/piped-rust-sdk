@@ -1,12 +1,11 @@
 [package]
 authors = ["Kavin <kavin@kavin.rocks>"]
 edition = "2018"
-include = [
-  "src/*.rs",
-  "Cargo.toml",
-]
+keywords = ["youtube"]
+license = "GPL-3.0"
 name = "piped"
-version = "0.1.0"
+repository = "https://github.com/TeamPiped/piped-rust-sdk"
+version = "0.0.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
