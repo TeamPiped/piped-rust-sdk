@@ -24,3 +24,7 @@ path = "trending.rs"
 [[example]]
 name = "video"
 path = "video.rs"
+
+[[example]]
+name = "search_suggestions"
+path = "search_suggestions.rs"

@@ -58,13 +58,7 @@ pub mod piped {
                 .append_pair("url", nexturl.as_str())
                 .append_pair("id", nextbody.as_str());
 
-            let resp = &self
-                .httpclient
-                .get(url.as_str())
-                .send()
-                .await?
-                .text()
-                .await?;
+            let resp = &self.httpclient.get(url).send().await?.text().await?;
 
             let streams: StreamsPage = serde_json::from_str(resp.as_str())?;
 
@@ -100,13 +94,7 @@ pub mod piped {
                 .append_pair("url", nexturl.as_str())
                 .append_pair("id", nextbody.as_str());
 
-            let resp = &self
-                .httpclient
-                .get(url.as_str())
-                .send()
-                .await?
-                .text()
-                .await?;
+            let resp = &self.httpclient.get(url).send().await?.text().await?;
 
             let streams: StreamsPage = serde_json::from_str(resp.as_str())?;
 
@@ -128,6 +116,20 @@ pub mod piped {
             let video: VideoInfo = serde_json::from_str(resp.as_str())?;
 
             Ok(video)
+        }
+
+        pub async fn get_search_suggestions(
+            &self,
+            q: String,
+        ) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+            let mut url = Url::parse(format!("{}/suggestions", &self.instance).as_str())?;
+            url.query_pairs_mut().append_pair("query", q.as_str());
+
+            let resp = &self.httpclient.get(url).send().await?.text().await?;
+
+            let suggestions: Vec<String> = serde_json::from_str(resp.as_str())?;
+
+            Ok(suggestions)
         }
     }
 
