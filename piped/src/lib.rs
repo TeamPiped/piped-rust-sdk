@@ -112,6 +112,23 @@ pub mod piped {
 
             Ok(streams)
         }
+
+        pub async fn get_video_from_id(
+            &self,
+            id: String,
+        ) -> Result<VideoInfo, Box<dyn std::error::Error>> {
+            let resp = &self
+                .httpclient
+                .get(format!("{}/streams/{}", &self.instance, id))
+                .send()
+                .await?
+                .text()
+                .await?;
+
+            let video: VideoInfo = serde_json::from_str(resp.as_str())?;
+
+            Ok(video)
+        }
     }
 
     #[derive(Deserialize, Debug)]
@@ -161,5 +178,56 @@ pub mod piped {
         pub uploaded_date: Option<String>,
         pub duration: i32,
         pub views: i64,
+    }
+
+    #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub struct VideoInfo {
+        pub title: String,
+        pub description: String,
+        pub upload_date: String,
+        pub uploader: String,
+        pub uploader_url: String,
+        pub uploader_avatar: String,
+        pub thumbnail_url: String,
+        pub hls: ::serde_json::Value,
+        pub duration: i32,
+        pub views: i64,
+        pub likes: i64,
+        pub dislikes: i64,
+        pub audio_streams: Vec<Stream>,
+        pub video_streams: Vec<Stream>,
+        pub related_streams: Vec<RelatedStream>,
+        pub subtitles: Vec<Subtitle>,
+        pub livestream: bool,
+    }
+
+    #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub struct Stream {
+        pub url: String,
+        pub format: String,
+        pub quality: String,
+        pub mime_type: String,
+        pub codec: Option<String>,
+        pub video_only: bool,
+        pub bitrate: i32,
+        pub init_start: i32,
+        pub init_end: i32,
+        pub index_start: i32,
+        pub index_end: i32,
+        pub width: i32,
+        pub height: i32,
+        pub fps: i32,
+    }
+
+    #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub struct Subtitle {
+        pub url: String,
+        pub mime_type: String,
+        pub name: String,
+        pub code: String,
+        pub auto_generated: bool,
     }
 }

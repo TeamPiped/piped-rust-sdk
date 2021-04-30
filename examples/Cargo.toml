@@ -20,3 +20,7 @@ path = "playlist.rs"
 [[example]]
 name = "trending"
 path = "trending.rs"
+
+[[example]]
+name = "video"
+path = "video.rs"
