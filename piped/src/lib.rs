@@ -24,7 +24,7 @@ pub mod piped {
                 .text()
                 .await?;
 
-            let streams: Vec<RelatedStream> = serde_json::from_str(resp.as_str()).unwrap();
+            let streams: Vec<RelatedStream> = serde_json::from_str(resp.as_str())?;
 
             Ok(streams)
         }
@@ -41,7 +41,7 @@ pub mod piped {
                 .text()
                 .await?;
 
-            let channel: Channel = serde_json::from_str(resp.as_str()).unwrap();
+            let channel: Channel = serde_json::from_str(resp.as_str())?;
 
             Ok(channel)
         }
@@ -53,8 +53,7 @@ pub mod piped {
             nextbody: String,
         ) -> Result<StreamsPage, Box<dyn std::error::Error>> {
             let mut url =
-                Url::parse(format!("{}/nextpage/channels/{}", &self.instance, id).as_str())
-                    .unwrap();
+                Url::parse(format!("{}/nextpage/channels/{}", &self.instance, id).as_str())?;
             url.query_pairs_mut()
                 .append_pair("url", nexturl.as_str())
                 .append_pair("id", nextbody.as_str());
@@ -67,7 +66,7 @@ pub mod piped {
                 .text()
                 .await?;
 
-            let streams: StreamsPage = serde_json::from_str(resp.as_str()).unwrap();
+            let streams: StreamsPage = serde_json::from_str(resp.as_str())?;
 
             Ok(streams)
         }
@@ -84,7 +83,7 @@ pub mod piped {
                 .text()
                 .await?;
 
-            let playlist: Playlist = serde_json::from_str(resp.as_str()).unwrap();
+            let playlist: Playlist = serde_json::from_str(resp.as_str())?;
 
             Ok(playlist)
         }
@@ -96,8 +95,7 @@ pub mod piped {
             nextbody: String,
         ) -> Result<StreamsPage, Box<dyn std::error::Error>> {
             let mut url =
-                Url::parse(format!("{}/nextpage/playlists/{}", &self.instance, id).as_str())
-                    .unwrap();
+                Url::parse(format!("{}/nextpage/playlists/{}", &self.instance, id).as_str())?;
             url.query_pairs_mut()
                 .append_pair("url", nexturl.as_str())
                 .append_pair("id", nextbody.as_str());
@@ -110,7 +108,7 @@ pub mod piped {
                 .text()
                 .await?;
 
-            let streams: StreamsPage = serde_json::from_str(resp.as_str()).unwrap();
+            let streams: StreamsPage = serde_json::from_str(resp.as_str())?;
 
             Ok(streams)
         }
