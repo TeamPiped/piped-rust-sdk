@@ -131,6 +131,39 @@ pub mod piped {
 
             Ok(suggestions)
         }
+
+        pub async fn get_comments_from_id(
+            &self,
+            id: String,
+        ) -> Result<CommentsInfo, Box<dyn std::error::Error>> {
+            let resp = &self
+                .httpclient
+                .get(format!("{}/comments/{}", &self.instance, id))
+                .send()
+                .await?
+                .text()
+                .await?;
+
+            let comments: CommentsInfo = serde_json::from_str(resp.as_str())?;
+
+            Ok(comments)
+        }
+
+        pub async fn get_comments_continuation(
+            &self,
+            id: String,
+            nexturl: String,
+        ) -> Result<CommentsInfo, Box<dyn std::error::Error>> {
+            let mut url =
+                Url::parse(format!("{}/nextpage/comments/{}", &self.instance, id).as_str())?;
+            url.query_pairs_mut().append_pair("url", nexturl.as_str());
+
+            let resp = &self.httpclient.get(url).send().await?.text().await?;
+
+            let comments: CommentsInfo = serde_json::from_str(resp.as_str())?;
+
+            Ok(comments)
+        }
     }
 
     #[derive(Deserialize, Debug)]
@@ -231,5 +264,27 @@ pub mod piped {
         pub name: String,
         pub code: String,
         pub auto_generated: bool,
+    }
+
+    #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub struct CommentsInfo {
+        pub comments: Vec<Comment>,
+        pub nextpage: Option<String>,
+    }
+
+    #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub struct Comment {
+        pub author: String,
+        pub thumbnail: String,
+        pub comment_id: String,
+        pub comment_text: String,
+        pub commented_time: String,
+        pub commentor_url: String,
+        pub like_count: i64,
+        pub hearted: bool,
+        pub pinned: bool,
+        pub verified: bool,
     }
 }

@@ -28,3 +28,7 @@ path = "video.rs"
 [[example]]
 name = "search_suggestions"
 path = "search_suggestions.rs"
+
+[[example]]
+name = "comments"
+path = "comments.rs"
