@@ -1,4 +1,4 @@
-use piped::piped::PipedClient;
+use piped::PipedClient;
 use reqwest::ClientBuilder;
 
 #[tokio::main]
@@ -13,9 +13,9 @@ async fn main() {
     let client = PipedClient::new(httpclient, instance);
 
     let playlist = client
-        .get_playlist_from_id("PLQSoWXSpjA38FIQCvwnVNPlGPVA63WTD8".to_string())
+        .playlist_from_id("PLQSoWXSpjA38FIQCvwnVNPlGPVA63WTD8".to_string())
         .await
         .unwrap();
 
-    println!("{:?}", playlist);
+    println!("{:#?}", playlist);
 }

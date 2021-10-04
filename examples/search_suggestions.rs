@@ -1,4 +1,4 @@
-use piped::piped::PipedClient;
+use piped::PipedClient;
 use reqwest::ClientBuilder;
 
 #[tokio::main]
@@ -13,9 +13,9 @@ async fn main() {
     let client = PipedClient::new(httpclient, instance);
 
     let suggestions = client
-        .get_search_suggestions("techlore".to_string())
+        .search_suggestions("techlore".to_string())
         .await
         .unwrap();
 
-    println!("{:?}", suggestions);
+    println!("{:#?}", suggestions);
 }

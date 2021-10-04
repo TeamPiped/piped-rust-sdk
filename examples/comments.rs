@@ -1,4 +1,4 @@
-use piped::piped::PipedClient;
+use piped::PipedClient;
 use reqwest::ClientBuilder;
 
 #[tokio::main]
@@ -13,9 +13,9 @@ async fn main() {
     let client = PipedClient::new(httpclient, instance);
 
     let comments = client
-        .get_comments_from_id("__hYx6ZzFbQ".to_string())
+        .comments_from_id("__hYx6ZzFbQ".to_string())
         .await
         .unwrap();
 
-    println!("{:?}", comments);
+    println!("{:#?}", comments);
 }
