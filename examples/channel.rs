@@ -1,4 +1,4 @@
-use piped::piped::PipedClient;
+use piped::PipedClient;
 use reqwest::ClientBuilder;
 
 #[tokio::main]
@@ -13,9 +13,9 @@ async fn main() {
     let client = PipedClient::new(httpclient, instance);
 
     let channel = client
-        .get_channel_from_id("UCXuqSBlHAE6Xw-yeJA0Tunw".to_string())
+        .channel_from_id("UCXuqSBlHAE6Xw-yeJA0Tunw".to_string())
         .await
         .unwrap();
 
-    println!("{:?}", channel);
+    println!("{:#?}", channel);
 }

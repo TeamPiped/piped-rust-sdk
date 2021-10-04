@@ -1,4 +1,4 @@
-use piped::piped::PipedClient;
+use piped::PipedClient;
 use reqwest::ClientBuilder;
 
 #[tokio::main]
@@ -12,7 +12,7 @@ async fn main() {
 
     let client = PipedClient::new(httpclient, instance);
 
-    let streams = client.get_trending("US".to_string()).await.unwrap();
+    let streams = client.trending("US".to_string()).await.unwrap();
 
-    println!("{:?}", streams);
+    println!("{:#?}", streams);
 }
