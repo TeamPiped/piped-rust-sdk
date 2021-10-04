@@ -15,14 +15,14 @@ pub mod piped {
             }
         }
 
-        pub async fn get_trending(&self) -> Result<Vec<RelatedStream>, Box<dyn std::error::Error>> {
-            let resp = &self
-                .httpclient
-                .get(format!("{}/trending", &self.instance))
-                .send()
-                .await?
-                .text()
-                .await?;
+        pub async fn get_trending(
+            &self,
+            region: String,
+        ) -> Result<Vec<RelatedStream>, Box<dyn std::error::Error>> {
+            let mut url = Url::parse(format!("{}/trending", &self.instance).as_str())?;
+            url.query_pairs_mut().append_pair("region", region.as_str());
+
+            let resp = &self.httpclient.get(url).send().await?.text().await?;
 
             let streams: Vec<RelatedStream> = serde_json::from_str(resp.as_str())?;
 
@@ -35,7 +35,7 @@ pub mod piped {
         ) -> Result<Channel, Box<dyn std::error::Error>> {
             let resp = &self
                 .httpclient
-                .get(format!("{}/channels/{}", &self.instance, id))
+                .get(format!("{}/channel/{}", &self.instance, id))
                 .send()
                 .await?
                 .text()
@@ -208,9 +208,11 @@ pub mod piped {
         pub url: String,
         pub title: String,
         pub thumbnail: String,
+        pub uploader_avatar: Option<String>,
         pub uploader_name: String,
         pub uploader_url: String,
         pub uploaded_date: Option<String>,
+        pub uploader_verified: bool,
         pub duration: i32,
         pub views: i64,
     }
@@ -220,15 +222,17 @@ pub mod piped {
     pub struct VideoInfo {
         pub title: String,
         pub description: String,
+        pub dash: Option<String>,
         pub upload_date: String,
         pub uploader: String,
         pub uploader_url: String,
         pub uploader_avatar: String,
         pub thumbnail_url: String,
-        pub hls: ::serde_json::Value,
+        pub hls: String,
         pub duration: i32,
         pub views: i64,
         pub likes: i64,
+        pub lbry_id: Option<String>,
         pub dislikes: i64,
         pub audio_streams: Vec<Stream>,
         pub video_streams: Vec<Stream>,
