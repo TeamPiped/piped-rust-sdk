@@ -7,7 +7,7 @@ const INSTANCE: &'static str = "https://pipedapi.kavin.rocks";
 async fn main() {
     let httpclient = Client::new();
 
-    let client = PipedClient::new(&httpclient, instance);
+    let client = PipedClient::new(&httpclient, INSTANCE);
 
     let suggestions = client
         .search_suggestions("techlore".to_string())
