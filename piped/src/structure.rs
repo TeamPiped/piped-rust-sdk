@@ -141,6 +141,6 @@ pub struct ChannelSearchItem {
     pub url: String,
     pub description: Option<String>,
     pub subscribers: i32,
-    pub videos: u32,
+    pub videos: i32,
     pub verified: bool,
 }
