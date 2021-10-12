@@ -131,6 +131,8 @@ pub struct Comment {
 pub struct ChannelSearch {
     pub items: Vec<ChannelSearchItem>,
     pub nextpage: Option<String>,
+    pub suggestion: Option<String>,
+    pub corrected: bool,
 }
 
 #[derive(Deserialize, Debug)]
