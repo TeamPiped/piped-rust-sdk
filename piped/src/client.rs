@@ -1,6 +1,8 @@
 use reqwest::{Client, Url};
 
-use crate::{Channel, CommentsInfo, Playlist, RelatedStream, Result, StreamsPage, VideoInfo};
+use crate::{
+    Channel, ChannelSearch, CommentsInfo, Playlist, RelatedStream, Result, StreamsPage, VideoInfo,
+};
 
 pub struct PipedClient {
     pub httpclient: Client,
@@ -12,9 +14,17 @@ const USER_AGENT: &'static str =
 
 impl PipedClient {
     pub fn new<S: AsRef<str>>(httpclient: &Client, instance: S) -> PipedClient {
+        // Format url to always have http(s) in the beginning and no ending /
+        let mut url = instance.as_ref().to_owned();
+        if !url.starts_with("http") {
+            url = format!("https://{}", url);
+        }
+        if url.ends_with('/') {
+            url.pop();
+        }
         PipedClient {
             httpclient: httpclient.clone(),
-            instance: instance.as_ref().to_string(),
+            instance: url,
         }
     }
 
@@ -187,5 +197,24 @@ impl PipedClient {
         let comments: CommentsInfo = serde_json::from_str(resp.as_ref())?;
 
         Ok(comments)
+    }
+
+    pub async fn search_channel<S: AsRef<str>>(&self, name: S) -> Result<ChannelSearch> {
+        let mut url = Url::parse(format!("{}/search", &self.instance).as_str())?;
+        url.query_pairs_mut().append_pair("q", name.as_ref());
+        url.query_pairs_mut().append_pair("filter", "channels");
+
+        let resp = &self
+            .httpclient
+            .get(url)
+            .header("User-Agent", USER_AGENT)
+            .send()
+            .await?
+            .text()
+            .await?;
+
+        let suggestions: ChannelSearch = serde_json::from_str(resp.as_ref())?;
+
+        Ok(suggestions)
     }
 }

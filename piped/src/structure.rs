@@ -125,3 +125,24 @@ pub struct Comment {
     pub pinned: bool,
     pub verified: bool,
 }
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct ChannelSearch {
+    pub items: Vec<ChannelSearchItem>,
+    pub nextpage: Option<String>,
+    pub suggestion: Option<String>,
+    pub corrected: bool,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct ChannelSearchItem {
+    pub name: String,
+    pub thumbnail: String,
+    pub url: String,
+    pub description: Option<String>,
+    pub subscribers: i32,
+    pub videos: i32,
+    pub verified: bool,
+}
