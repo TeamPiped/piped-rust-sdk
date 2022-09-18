@@ -49,6 +49,7 @@ pub struct RelatedStream {
     pub uploader_verified: bool,
     pub duration: i32,
     pub views: i64,
+    pub uploaded: i64,
 }
 
 #[derive(Debug, Deserialize)]

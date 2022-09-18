@@ -36,3 +36,7 @@ path = "search_channel.rs"
 [[example]]
 name = "comments"
 path = "comments.rs"
+
+[[example]]
+name = "bulk_feed"
+path = "bulk_feed.rs"

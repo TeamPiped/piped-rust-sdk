@@ -9,8 +9,7 @@ pub struct PipedClient {
     pub instance: String,
 }
 
-const USER_AGENT: &'static str =
-    "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0";
+const USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0";
 
 impl PipedClient {
     pub fn new<S: AsRef<str>>(httpclient: &Client, instance: S) -> PipedClient {
@@ -59,6 +58,31 @@ impl PipedClient {
         let channel: Channel = serde_json::from_str(resp.as_str())?;
 
         Ok(channel)
+    }
+
+    pub async fn bulk_feed<S: AsRef<str>, I: IntoIterator<Item = S>>(
+        &self,
+        ids: I,
+    ) -> Result<Vec<RelatedStream>> {
+        let resp = &self
+            .httpclient
+            .get(format!(
+                "{}/feed/unauthenticated?channels={}",
+                &self.instance,
+                ids.into_iter()
+                    .map(|s| s.as_ref().to_owned())
+                    .collect::<Vec<_>>()
+                    .join(",")
+            ))
+            .header("User-Agent", USER_AGENT)
+            .send()
+            .await?
+            .text()
+            .await?;
+
+        let videos: Vec<RelatedStream> = serde_json::from_str(resp.as_str())?;
+
+        Ok(videos)
     }
 
     pub async fn channel_continuation<S: AsRef<str>>(
