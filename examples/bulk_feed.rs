@@ -10,10 +10,7 @@ async fn main() {
 
     let client = PipedClient::new(&httpclient, INSTANCE);
 
-    let videos = client
-        .bulk_feed(CHANNELS)
-        .await
-        .unwrap();
+    let videos = client.bulk_feed(CHANNELS).await.unwrap();
 
     println!("{:#?}", videos);
 }

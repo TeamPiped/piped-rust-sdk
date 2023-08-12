@@ -9,7 +9,7 @@ pub struct PipedClient {
     pub instance: String,
 }
 
-const USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0";
+const USER_AGENT: &str = concat!("piped-rust-sdk/{}", env!("CARGO_PKG_VERSION"));
 
 impl PipedClient {
     pub fn new<S: AsRef<str>>(httpclient: &Client, instance: S) -> PipedClient {
