@@ -6,7 +6,7 @@ keywords = ["youtube"]
 license = "GPL-3.0"
 name = "piped"
 repository = "https://github.com/TeamPiped/piped-rust-sdk"
-version = "0.0.3"
+version = "0.0.4"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
